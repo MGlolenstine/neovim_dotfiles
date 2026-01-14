@@ -1,3 +1,7 @@
+--=============================================================================
+--                                         https://github.com/folke/snacks.nvim
+--=============================================================================
+
 local function picker(name, config)
   return function() require "snacks.picker"[name](config) end
 end
@@ -63,6 +67,20 @@ return {
     },
   },
   keys = {
+    { "<leader><space>", picker "smart" },
+    { "<leader>n",       picker "files" },
+    { "<leader>l",       picker "grep" },
+    { "<leader>L",       picker "grep_word" },
+    { "<leader><cr>",    picker "resume" },
+    { "<leader>m",       picker "marks" },
+    { "<leader>h",       picker "help" },
+    { "gd",              picker "lsp_definitions" },
+    { "gi",              picker "lsp_implementations" },
+    { "gr",              picker "lsp_references" },
+    { "gt",              picker "lsp_type_definitions" },
+    { "<leader>q",       picker "qflist" },
+    { "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
+    { "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
     {
       "<leader>e",
       function()

@@ -1,20 +1,5 @@
--- Telescope
-vim.keymap.set('n', '<leader>n', ':Telescope find_files<CR>', { desc = 'Fuzzy find files' })
-vim.keymap.set('n', '<leader>b', ':Telescope buffers<CR>', { desc = 'Search through buffers' })
-vim.keymap.set('n', '<leader>h', ':Telescope help_tags<CR>', { desc = 'Search through help' })
-vim.keymap.set('n', '<leader>l', ':Telescope live_grep<CR>', { desc = 'Live grep search' })
-vim.keymap.set('v', '<leader>l', function()
-    local builtin = require('telescope.builtin')
-    builtin.grep_string()
-end, { desc = 'Search selection' })
-
 -- LSP commands
 vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { desc = 'Format buffer' })
-vim.keymap.set('n', '<leader>ss', ':Telescope lsp_document_symbols<CR>', { desc = 'Search through document symbols' })
-vim.keymap.set('n', '<leader>ss', ':Telescope lsp_document_symbols<CR>', { desc = 'Search through document symbols' })
-vim.keymap.set('n', 'gd', ':Telescope lsp_definitions<CR>', { desc = 'Search through workspace symbols' })
-vim.keymap.set('n', 'gr', ':Telescope lsp_references<CR>', { desc = 'Search through workspace symbols' })
-vim.keymap.set("n", "K", vim.lsp.buf.hover)
 vim.keymap.set({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action)
 vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename)
 
@@ -44,9 +29,11 @@ vim.keymap.set("i", "<cr>", function()
     if vim.tbl_contains({ "}", "]" }, next) then return "<cr><esc>ko" end
     return "<cr>"
 end, { expr = true })
+vim.keymap.set("v", "ms", "S", { remap = true, desc = "Surround selection" })
 
 -- AugmentCode
-vim.keymap.set({"v", "n"}, "<leader>ac", ":Augment chat<CR>")
-vim.keymap.set("n", "<leader>an", ":Augment chat-new<CR>")
-vim.keymap.set("n", "<leader>at", ":Augment chat-toggle<CR>")
+vim.keymap.set({"v", "n"}, "<leader>Ac", ":Augment chat<CR>")
+vim.keymap.set("n", "<leader>An", ":Augment chat-new<CR>")
+vim.keymap.set("n", "<leader>At", ":Augment chat-toggle<CR>")
+
 
