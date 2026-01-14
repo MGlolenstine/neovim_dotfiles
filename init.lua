@@ -1,0 +1,7 @@
+require("config.lazy")
+require("telescope")
+require("config.remap")
+require("config.sets")
+require("config.theme")
+require("config.lsp_options")
+require("oil").setup()
