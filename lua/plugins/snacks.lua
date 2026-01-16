@@ -81,6 +81,7 @@ return {
     { "<leader>q",       picker "qflist" },
     { "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
     { "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
+    { "<leader>b",       picker "buffers" },
     {
       "<leader>e",
       function()
@@ -94,4 +95,3 @@ return {
     { "<leader>G", function() require "snacks".git.blame_line() end },
   },
 }
-

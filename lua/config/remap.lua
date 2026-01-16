@@ -1,5 +1,18 @@
 -- LSP commands
-vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { desc = 'Format buffer' })
+-- vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { desc = 'Format buffer' })
+vim.keymap.set("n", "<leader>f", function()
+    local ft = vim.bo.filetype
+  
+    if ft == "javascript" or ft == "javascriptreact"
+      or ft == "typescript" or ft == "typescriptreact"
+    then
+      -- Use ESLint's fix-all for JS/TS
+      vim.cmd("LspEslintFixAll")
+    else
+      -- Default formatter for Rust, Lua, etc.
+      vim.lsp.buf.format({ async = true })
+    end
+  end, { desc = "Format buffer" })
 vim.keymap.set({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action)
 vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename)
 

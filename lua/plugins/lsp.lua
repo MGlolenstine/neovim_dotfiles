@@ -45,9 +45,13 @@ return {
             require("mason-lspconfig").setup({
                 automatic_installation = true,
                 ensure_installed = {
+                    -- Lua
                     "lua_ls",
+                    -- Rust
                     "rust_analyzer",
+                    -- TypeScript/JavaScript
                     "ts_ls",
+                    "eslint",
                     "denols",
                 },
                 handlers = {
@@ -112,6 +116,17 @@ return {
                     -- Custom handler for TypeScript/JavaScript
                     ["ts_ls"] = function()
                         lspconfig.ts_ls.setup({
+                            capabilities = capabilities,
+                            on_attach = function(client, bufnr)
+                                client.server_capabilities.documentFormattingProvider = false
+                                client.server_capabilities.documentRangeFormattingProvider = false
+                            end,
+                        })
+                    end,
+
+                    -- Custom handler for ESLint
+                    ["eslint"] = function()
+                        lspconfig.eslint.setup({
                             capabilities = capabilities,
                         })
                     end,
