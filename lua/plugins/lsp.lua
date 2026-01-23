@@ -1,36 +1,45 @@
 return {
-    -- Mason MUST be first
     {
         "williamboman/mason.nvim",
-        lazy = false,    -- Load immediately
-        priority = 1000, -- Load before everything
         config = function()
             require("mason").setup()
         end,
     },
 
-    -- Then mason-lspconfig
     {
         "williamboman/mason-lspconfig.nvim",
-        lazy = false,
         dependencies = {
             "williamboman/mason.nvim",
             "neovim/nvim-lspconfig",
             "hrsh7th/cmp-nvim-lsp",
         },
         config = function()
+            -- Configure LSP UI with borders
             local border = "rounded"
 
-            -- Set border for lspconfig UI windows
+            -- Set border for lspconfig windows (e.g., :LspInfo)
             require('lspconfig.ui.windows').default_options.border = border
 
-            -- Override the default hover handler to force borders
+            -- Override the default floating preview to always use borders
             local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
             function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
                 opts = opts or {}
                 opts.border = opts.border or border
                 return orig_util_open_floating_preview(contents, syntax, opts, ...)
             end
+
+            -- Set borders for LSP floating windows (belt and suspenders approach)
+            vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+                vim.lsp.handlers.hover, { border = border }
+            )
+            vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+                vim.lsp.handlers.signature_help, { border = border }
+            )
+
+            -- Set border for diagnostic floating windows
+            vim.diagnostic.config({
+                float = { border = border }
+            })
 
             -- Default capabilities from nvim-cmp (with fallback)
             local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -39,7 +48,7 @@ return {
                 capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
             end
 
-            -- Now setup mason-lspconfig with handlers
+            -- Setup mason-lspconfig with handlers
             local lspconfig = require("lspconfig")
 
             require("mason-lspconfig").setup({
@@ -154,9 +163,7 @@ return {
         end,
     },
 
-    -- Finally lspconfig (loaded as dependency, no config needed here)
     {
         "neovim/nvim-lspconfig",
-        lazy = false,
     },
 }

@@ -1,18 +1,16 @@
 -- LSP commands
--- vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { desc = 'Format buffer' })
 vim.keymap.set("n", "<leader>f", function()
     local ft = vim.bo.filetype
-  
-    if ft == "javascript" or ft == "javascriptreact"
-      or ft == "typescript" or ft == "typescriptreact"
-    then
-      -- Use ESLint's fix-all for JS/TS
-      vim.cmd("LspEslintFixAll")
+    local js_ts_filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
+
+    if vim.tbl_contains(js_ts_filetypes, ft) then
+        -- Use ESLint's fix-all for JS/TS files
+        vim.cmd("EslintFixAll")
     else
-      -- Default formatter for Rust, Lua, etc.
-      vim.lsp.buf.format({ async = true })
+        -- Default LSP formatter for other languages
+        vim.lsp.buf.format({ async = true })
     end
-  end, { desc = "Format buffer" })
+end, { desc = "Format buffer" })
 vim.keymap.set({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action)
 vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename)
 
@@ -31,17 +29,11 @@ vim.keymap.set('n', '<leader><leader>', ':so<CR>', { desc = "Source the file" })
 -- UndoTree
 vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
 
+-- Jump to last change
+vim.keymap.set('n', 'g.', 'g;', { desc = 'Jump to last change' })
+
 -- Keybinds
 vim.keymap.set("n", "<leader>w", "<cmd>wincmd w<cr>")
-vim.keymap.set("i", "<cr>", function()
-    ---@diagnostic disable-next-line
-    local line = vim.fn.getline "."
-    local col = vim.fn.col "."
-    ---@diagnostic disable-next-line
-    local next = line:sub(col, col)
-    if vim.tbl_contains({ "}", "]" }, next) then return "<cr><esc>ko" end
-    return "<cr>"
-end, { expr = true })
 vim.keymap.set("v", "ms", "S", { remap = true, desc = "Surround selection" })
 
 -- AugmentCode
